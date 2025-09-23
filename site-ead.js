@@ -14,7 +14,7 @@ let nome = prompt("Qual é o seu nome? ");  // O usuário digita e a resposta é
 console.log(`Que bom te ter por aqui, ${nome}.`);
 
 // Mostra informações sobre os benefícios.
-console.log("\nJá pensou em ter acesso a um conteúdo didático e voltado para a sua necessidade?");
+console.log(" Já pensou em ter acesso a um conteúdo didático e voltado para a sua necessidade?");
 console.log("E o melhor: tudo isso pode ser agendado conforme sua disponibilidade.");
 console.log("Legal, né?");
 
@@ -25,7 +25,7 @@ if (resposta === "não" || resposta === "nao") {
     let certeza = prompt("Tem certeza que vai deixar passar essa oportunidade? (sim/não) ").toLowerCase();
 
     if (certeza === "sim") {
-        console.log("\nOk, fique à vontade para navegar no site. Se mudar de ideia, estaremos aqui.");
+        console.log(" Ok, fique à vontade para navegar no site. Se mudar de ideia, estaremos aqui.");
         process.exit(); // Encerra o programa.
     }
 }
@@ -67,7 +67,7 @@ if (perfil === "1") {
 
 } else {
     console.log(" Opção inválida. Reinicie o programa e escolha uma opção correta.");
-    process.exit(); // Encerra o programa
+    process.exit(); 
 }
 
 //Informação impresa na tela.
@@ -75,4 +75,4 @@ if (perfil === "1") {
 console.log(" Esses são os conteúdos disponíveis atualmente para você.");
 console.log("Que tal agendar sua primeira aula? ");
 
-// FIM DO PROGRAMA
+// Fim parcial do programa.
