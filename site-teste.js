@@ -113,6 +113,45 @@ materias.forEach((mat, index) => {
 });
 console.log();
 
+// Perguntar qual matéria deseja
+rl.question("Digite o NOME ou o NÚMERO da matéria que deseja acessar: ", (resMat) => {
+  let materiaEscolhida;
+
+  // Se o usuário digitou um número
+  if (!isNaN(resMat)) {
+    const indice = parseInt(resMat) - 1;
+    materiaEscolhida = materias[indice];
+  } else {
+    // Se digitou o nome (ignora maiúsculas/minúsculas)
+    materiaEscolhida = materias.find(m => m.toLowerCase() === resMat.toLowerCase());
+  }
+
+  if (materiaEscolhida) {
+    console.log(`Você escolheu a matéria: ${materiaEscolhida}`);
+    console.log();
+
+    // Mostrar horários
+    console.log("Horários disponíveis:");
+    horarios.forEach((hora, index) => console.log(`${index + 1}. ${hora}`));
+    console.log();
+    // Perguntar horário
+    rl.question("Digite o número do horário que deseja agendar: ", (resHora) => {
+      const horaEscolhida = horarios[parseInt(resHora) - 1];
+
+      if (horaEscolhida) {
+        console.log(`✅ Agendamento confirmado para ${materiaEscolhida} no horário: ${horaEscolhida}.`);
+      } else {
+        console.log("❌ Opção de horário inválida. Reinicie o programa.");
+      }
+      rl.close();
+    });
+
+  } else {
+    console.log("❌ Opção de matéria inválida. Reinicie o programa.");
+    rl.close();
+  }
+});
+
 
 // OBJETIVO: Criar um calendário de aulas, permitindo marcar e desmarcar aulas,
 // com controle de dias disponíveis, indisponíveis e dias de aula coletiva.
@@ -124,14 +163,6 @@ let aulasMarcadas = {}; // guarda datas com aulas marcadas.
 // Defina aqui o dia da semana para aula coletiva (ex: quarta-feira = 3)
 const DIA_COLETIVO = 3; // 1=Seg, 2=Ter, 3=Qua, 4=Qui, 5=Sex — escolhi 3 (quarta)
 
-// Exibe mensagem de boas-vindas ao calendário
-console.log("Bem-vindo ao Calendário de Aulas!");
-console.log();
-console.log("Você pode marcar aulas individuais em dias disponíveis (dias úteis, exceto dia coletivo).");
-console.log("Aulas coletivas ocorrem toda quarta-feira, são aulas em grupo com outros alunos.");
-console.log("Dias indisponíveis: Sábados, Domingos e o dia coletivo (quarta-feira).");
-console.log("Símbolos no calendário: X = indisponível | * = aula individual marcada | # = aula coletiva | espaço = disponível");
-console.log();
 
 // Função para desenhar um calendário mensal no terminal
 function desenharCalendario(mes, ano) {
@@ -233,6 +264,13 @@ function desmarcarAula() {
 
 // Função principal para mostrar o menu e executar comandos
 function calendario() {
+// Exibe mensagem de boas-vindas ao calendário
+console.log("\nAgora, vamos marcar a data da aula\n");
+console.log("Você pode marcar aulas individuais em dias disponíveis (dias úteis, exceto dia coletivo).");
+console.log("Aulas coletivas ocorrem toda quarta-feira, são aulas em grupo com outros alunos.");
+console.log("Dias indisponíveis: Sábados, Domingos e o dia coletivo (quarta-feira).");
+console.log("Símbolos no calendário: X = indisponível | * = aula individual marcada | # = aula coletiva | espaço = disponível\n");
+
     while (true) { // repete até o usuário escolher sair
         console.log('\n=== MENU DO CALENDÁRIO ==='); // cabeçalho do menu
         console.log('1) Ver calendário de Setembro a Novembro de 2025'); // opção 1
@@ -250,7 +288,7 @@ function calendario() {
         } else if (opcao === '3') {
             desmarcarAula(); // chama função para desmarcar
         } else if (opcao === '0') {
-            console.log('Saindo... Obrigado por usar o calendário de aulas!'); // mensagem de despedida
+            console.log('Obrigado por usar o calendário de aulas!'); // mensagem de despedida
             break; // sai do loop e encerra o programa
         } else {
             console.log('Opção inválida.'); // recebe outra entrada se inválida
@@ -258,45 +296,8 @@ function calendario() {
     }
 }
 
-// Inicia o programa,
-calendario(); // chamando a função principal para começar o menu
-console.log();
-
-// Perguntar qual matéria deseja
-rl.question("Digite o NOME ou o NÚMERO da matéria que deseja acessar: ", (resMat) => {
-  let materiaEscolhida;
-
-  // Se o usuário digitou um número
-  if (!isNaN(resMat)) {
-    const indice = parseInt(resMat) - 1;
-    materiaEscolhida = materias[indice];
-  } else {
-    // Se digitou o nome (ignora maiúsculas/minúsculas)
-    materiaEscolhida = materias.find(m => m.toLowerCase() === resMat.toLowerCase());
-  }
-
-  if (materiaEscolhida) {
-    console.log(`Você escolheu a matéria: ${materiaEscolhida}`);
-    console.log();
-
-    // Mostrar horários
-    console.log("Horários disponíveis:");
-    horarios.forEach((hora, index) => console.log(`${index + 1}. ${hora}`));
-    console.log();
-    // Perguntar horário
-    rl.question("Digite o número do horário que deseja agendar: ", (resHora) => {
-      const horaEscolhida = horarios[parseInt(resHora) - 1];
-
-      if (horaEscolhida) {
-        console.log(`✅ Agendamento confirmado para ${materiaEscolhida} no horário: ${horaEscolhida}.`);
-      } else {
-        console.log("❌ Opção de horário inválida. Reinicie o programa.");
-      }
-      rl.close();
-    });
-
-  } else {
-    console.log("❌ Opção de matéria inválida. Reinicie o programa.");
-    rl.close();
-  }
+rl.on('close', () => { // quando o readline for fechado (após agendar a matéria)
+    calendario(); // inicia o programa do calendário
+  console.log("Programa encerrado."); // mensagem final
+  process.exit(0); // encerra o processo
 });
