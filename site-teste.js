@@ -20,7 +20,7 @@ console.log("E o melhor: tudo isso pode ser agendado conforme sua disponibilidad
 console.log("Legal, né?");
 console.log();
 // Pergunta ao usuário se ele quer 3 aulas grátis.
-let resposta = prompt("O que você acha de ganhar 3 aulas experimentais totalmente grátis? (sim/não) ").toLowerCase();
+let resposta = prompt("O que você acha de ganhar 3 aulas experimentais totalmente grátis? (sim/não): ").toLowerCase();
 
 console.log();
 
@@ -80,68 +80,73 @@ if (perfil === "1") {
 //Informação impresa na tela.
 console.log();
 console.log("Esses são os conteúdos disponíveis atualmente para você.");
+console.log();
 
-const readline = require('readline'); // Importa o módulo 'readline' do Node.js para ler entradas do usuário no terminal
+const readline = require('readline'); 
 
-// Cria a interface de entrada e saída para o terminal
 const rl = readline.createInterface({
-  input: process.stdin, // define que a entrada será o teclado
-  output: process.stdout // define que a saída será o terminal
+  input: process.stdin,
+  output: process.stdout
 });
 
 // Lista de matérias disponíveis
 const materias = [
-  "Matemática", "Português", "Ciências","História", "Geografia", "Artes", "Inglês",
-  "Música", "Informática", "Filosofia", "Sociologia", "Literatura"
+  "Matemática", "Português", "Ciências", "História", "Geografia",
+  "Artes", "Inglês", "Música", "Informática", "Filosofia",
+  "Sociologia", "Literatura"
 ];
 
-// Lista de horários disponíveis (segunda a sexta-feira, dois horários por dia)
+// Lista de horários disponíveis
 const horarios = [
-  "Segunda-feira 10h.", "Segunda-feira 14h.",
-  "Terça-feira 10h.", "Terça-feira 14h.",
-  "Quarta-feira 10h.", "Quarta-feira 14h.",
-  "Quinta-feira 10h.", "Quinta-feira 14h.",
-  "Sexta-feira 10h.", "Sexta-feira 14h."
+  "Segunda-feira 10h", "Segunda-feira 14h",
+  "Terça-feira 10h", "Terça-feira 14h",
+  "Quarta-feira 10h", "Quarta-feira 14h",
+  "Quinta-feira 10h", "Quinta-feira 14h",
+  "Sexta-feira 10h", "Sexta-feira 14h"
 ];
 
-// Mostra todas as matérias e horários disponíveis no terminal
-console.log("Matérias e horários disponíveis: ");
-console.log();
-materias.forEach((mat) => { // Para cada matéria na lista
-  console.log(`Matéria: ${mat}`); // Mostra o nome da matéria
-  horarios.forEach((hora) => console.log(`  - ${hora}`)); // Lista todos os horários disponíveis para cada matéria
-  console.log(""); // Linha em branco entre matérias para melhor visualização
+// Mostrar matérias numeradas
+console.log("Matérias disponíveis:");
+materias.forEach((mat, index) => {
+  console.log(`${index + 1}. ${mat}`);
 });
+console.log();
 
-// Pergunta ao usuário qual matéria ele deseja acessar
-rl.question("Digite o nome da matéria que deseja acessar: ", (resMat) => {
-  // Procura a matéria digitada pelo usuário, ignorando maiúsculas/minúsculas
-  const materiaEscolhida = materias.find(m => m.toLowerCase() === resMat.toLowerCase());
+// Perguntar qual matéria deseja
+rl.question("Digite o NOME ou o NÚMERO da matéria que deseja acessar: ", (resMat) => {
+  let materiaEscolhida;
 
-  if (materiaEscolhida) { // Se a matéria digitada for válida
-    console.log(`Você escolheu a matéria: ${materiaEscolhida}.`);
+  // Se o usuário digitou um número
+  if (!isNaN(resMat)) {
+    const indice = parseInt(resMat) - 1;
+    materiaEscolhida = materias[indice];
+  } else {
+    // Se digitou o nome (ignora maiúsculas/minúsculas)
+    materiaEscolhida = materias.find(m => m.toLowerCase() === resMat.toLowerCase());
+  }
+
+  if (materiaEscolhida) {
+    console.log(`Você escolheu a matéria: ${materiaEscolhida}`);
     console.log();
 
-    // Mostra todos os horários disponíveis
-    console.log(" Horários disponíveis:");
+    // Mostrar horários
+    console.log("Horários disponíveis:");
     horarios.forEach((hora, index) => console.log(`${index + 1}. ${hora}`));
     console.log();
-
-    // Pergunta ao usuário qual horário deseja agendar
+    // Perguntar horário
     rl.question("Digite o número do horário que deseja agendar: ", (resHora) => {
-      const horaEscolhida = horarios[resHora - 1]; // Seleciona o horário correspondente ao número digitado
+      const horaEscolhida = horarios[parseInt(resHora) - 1];
 
-      if (horaEscolhida) { // Se o horário digitado for válido
-        console.log(`Agendamento confirmado para ${materiaEscolhida} no horário: ${horaEscolhida}`);
-      } else { // Caso o número digitado não corresponda a nenhum horário
-        console.log("Opção de horário inválida. Reinicie o programa.");
+      if (horaEscolhida) {
+        console.log(`✅ Agendamento confirmado para ${materiaEscolhida} no horário: ${horaEscolhida}.`);
+      } else {
+        console.log("❌ Opção de horário inválida. Reinicie o programa.");
       }
-      rl.close(); // Fecha a interface de entrada
+      rl.close();
     });
 
-  } else { // Se a matéria digitada não existir na lista
-    console.log("Opção de matéria inválida. Reinicie o programa.");
-    rl.close(); // Fecha a interface de entrada
+  } else {
+    console.log("❌ Opção de matéria inválida. Reinicie o programa.");
+    rl.close();
   }
 });
-
